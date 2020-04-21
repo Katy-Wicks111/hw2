@@ -58,8 +58,9 @@ char* expand_charseq(const char* src)
     size_t spos = 0;
     size_t dpos = 0;
 
-    while (*src != 0 && spos < charseq_length(src)) {
-        if (src[spos + 1] == '-' && src[spos + 2] != 0){
+    while (src[spos] != 0) {
+        if (spos + 2 < charseq_length(src) &&
+            src[spos + 1] == '-' && src[spos + 2] != 0){
             int start = src[spos];
             int end = src[spos + 2];
             while (start <= end){
@@ -69,12 +70,15 @@ char* expand_charseq(const char* src)
             }
             spos = spos + 3;
         }
-        else if (src[spos] == '\\' && src[spos + 1] != 0){
+        else if (spos + 1 < charseq_length(src) &&
+                 src[spos] == '\\' && src[spos + 1] != 0){
             dst[dpos] = interpret_escape(src[spos+1]);
             dpos = dpos + 1;
             spos = spos + 2;
         } else {
-            *dst++ = *src++;
+            dst[dpos] = src[spos];
+            dpos = dpos + 1;
+            spos = spos + 1;
         }
     }
     *dst = 0;
@@ -83,17 +87,22 @@ char* expand_charseq(const char* src)
 
 char translate_char(char c, const char* from, const char* to)
 {
-    //
-    // TODO: Your code goes here
-    //
+    size_t pos = 0;
+    while (pos < strlen(from)){
+        if (from[pos] == c ){
+        return to[pos];
+        }
+        pos = pos + 1;
+    }
 
     return c;
 }
 
 void translate(char* s, const char* from, const char* to)
 {
-    //
-    // TODO: Your code goes here
-    //
+    size_t pos = 0;
+    while (pos < strlen(s)){
+        s[pos] = translate_char(s[pos], from, to);
+    }
 }
 
