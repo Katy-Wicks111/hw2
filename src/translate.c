@@ -23,7 +23,6 @@ char interpret_escape(char c)
 
 size_t charseq_length(const char* src)
 {
-    size_t result = 0;
     size_t count = 0;
     size_t pos = 0;
 
@@ -44,10 +43,9 @@ size_t charseq_length(const char* src)
             count = count + 1;
             pos = pos + 1;
         }
-        return count;
     }
-    return result;
-    }
+    return count;
+}
     
 
 char* expand_charseq(const char* src)
