@@ -48,17 +48,34 @@ size_t charseq_length(const char* src)
 
 char* expand_charseq(const char* src)
 {
-    char* result = malloc(charseq_length(src) + 1);
+char* result = malloc(charseq_length(src) + 1);
     if (!result) return NULL;
 
     char* dst    = result;
+    size_t spos = 0;
+    size_t dpos = 0;
 
-    //
-    // TODO: Your code goes here
-    //
+    while (*src != 0 && spos < charseq_length(src)) {
+        if (src[spos + 1] == '-' && src[spos + 2] != 0){
+            int start = src[spos];
+            int end = src[spos + 2];
+            while (start <= end){
+                dst[dpos] = start;
+                dpos = dpos + 1;
+                start = start + 1;
+            }
+            spos = spos + 3;
 
+        }
+        else if (src[spos] == '\\' && src[spos + 1] != 0){
+            dst[dpos] = interpret_escape(src[spos+1]);
+            dpos = dpos + 1;
+            spos = spos + 2;
+        } else {
+            *dst++ = *src++;
+        }
+    }
     *dst = 0;
-
     return result;
 }
 
