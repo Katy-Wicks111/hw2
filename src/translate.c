@@ -23,59 +23,45 @@ char interpret_escape(char c)
 
 size_t charseq_length(const char* src)
 {
-     size_t count = 0;
+    size_t count = 0;
     size_t pos = 0;
-    while(*src != 0 && pos + 2 < strlen(src)){
-        if ( src[pos + 1] == '-' && src[pos + 2] != 0){
-            char start = src[pos];
-            char end = src[pos + 2];
-            if (start <= end){
+    while(src[pos] != 0){
+        size_t next= pos+1;
+        size_t nextnext= next+1;
+            if(nextnext<strlen(src) && src[next]== '-' && src[nextnext]== 0){
+                char start= src[pos];
+                char end= src[nextnext];
+                if (start <= end){
                 count = count + end - start + 1;
                 pos = pos + 3;
+                }
             }
-        }
-        if (src[pos] == '\\' && src[pos + 1] != 0){
+            else if (next<strlen(src) && src[pos] == '\\' && src[next] != 0){
             count = count + 1;
             pos = pos + 2;
-        } else {
-            count = count + 1;
-            pos = pos + 1;
+            }
+        else{
+            count= count+1;
+            pos=pos+1;
         }
     }
     return count;
 }
-    
+ 
 
 char* expand_charseq(const char* src)
 {
-char* result = malloc(charseq_length(src) + 1);
+    char* result = malloc(charseq_length(src) + 1);
     if (!result) return NULL;
 
     char* dst    = result;
-    size_t spos = 0;
-    size_t dpos = 0;
 
-    while (*src != 0 && spos < charseq_length(src)) {
-        if (src[spos + 1] == '-' && src[spos + 2] != 0){
-            int start = src[spos];
-            int end = src[spos + 2];
-            while (start <= end){
-                dst[dpos] = start;
-                dpos = dpos + 1;
-                start = start + 1;
-            }
-            spos = spos + 3;
+    //
+    // TODO: Your code goes here
+    //
 
-        }
-        else if (src[spos] == '\\' && src[spos + 1] != 0){
-            dst[dpos] = interpret_escape(src[spos+1]);
-            dpos = dpos + 1;
-            spos = spos + 2;
-        } else {
-            *dst++ = *src++;
-        }
-    }
     *dst = 0;
+
     return result;
 }
 
