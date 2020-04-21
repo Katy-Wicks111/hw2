@@ -28,7 +28,7 @@ size_t charseq_length(const char* src)
     while(src[pos] != 0){
         size_t next= pos+1;
         size_t nextnext= next+1;
-            if(nextnext<strlen(src) && src[next]== '-' && src[nextnext]== 0){
+            if(nextnext<strlen(src) && src[next]== '-' && src[nextnext]!== 0){
                 char start= src[pos];
                 char end= src[nextnext];
                 if (start <= end){
