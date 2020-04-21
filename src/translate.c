@@ -51,7 +51,8 @@ size_t charseq_length(const char* src)
 
 char* expand_charseq(const char* src)
 {
-     char* result = malloc(charseq_length(src) + 1);
+     
+    char* result = malloc(charseq_length(src) + 1);
     if (!result) return NULL;
 
     char* dst    = result;
@@ -81,18 +82,20 @@ char* expand_charseq(const char* src)
             spos = spos + 1;
         }
     }
-    *dst = 0;
-    return result;
+
+    return dst;
 }
 
 char translate_char(char c, const char* from, const char* to)
 {
-    size_t pos = 0;
+    ssize_t pos = 0;
     while (pos < strlen(from)){
-        if (from[pos] == c ){
+        if (from[pos] == c){
         return to[pos];
+        } else {
+            pos = pos + 1;
         }
-        pos = pos + 1;
+
     }
 
     return c;
@@ -100,9 +103,11 @@ char translate_char(char c, const char* from, const char* to)
 
 void translate(char* s, const char* from, const char* to)
 {
-    size_t pos = 0;
+   size_t pos = 0;
     while (pos < strlen(s)){
         s[pos] = translate_char(s[pos], from, to);
+        pos = pos + 1;
+
     }
 }
 
