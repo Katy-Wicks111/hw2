@@ -1,0 +1,5 @@
+tr
+test_translate
+*.dSYM
+*.i
+*.o
