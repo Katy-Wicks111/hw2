@@ -23,27 +23,22 @@ char interpret_escape(char c)
 
 size_t charseq_length(const char* src)
 {
-    size_t result = 0;
-
-    //
-    size_t charseq_length(const char* src)
-    {
         size_t result = 0;
         int count = 0;
         int pos = 0;
         
-        while(strcmp(src[pos], "0") != 0){
+        while(*src != 0){
             if (pos + 2 < strlen(src)
-                && strcmp(src[pos + 1], "-") == 0
-                && strcmp(src[pos + 2], 0) != 0){
-                char start = src[pos];
-                char end = src[pos+2];
+                && *src[pos + 1] == "-"
+                && *src[pos + 2] != 0){
+                char start = *src[pos];
+                char end = *src[pos+2];
                 if (start <= end){
                     count = count + end - start + 1;
                     pos = pos + 3;
                 }
             }
-            if (strcmp(src[pos], "\\") == 0 && strcmp(src[pos + 1], "0") != 0){
+            if (*src[pos] == "\\" && *src[pos + 1] != 0){
                 count = count + 1;
                 pos = pos + 2;
             } else {
@@ -55,10 +50,6 @@ size_t charseq_length(const char* src)
         return result;
     }
     
-    //
-
-    return result;
-}
 
 char* expand_charseq(const char* src)
 {
