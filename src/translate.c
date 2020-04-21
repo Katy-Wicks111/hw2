@@ -23,21 +23,19 @@ char interpret_escape(char c)
 
 size_t charseq_length(const char* src)
 {
-    size_t count = 0;
+     size_t count = 0;
     size_t pos = 0;
-
     while(*src != 0){
-        char* src1 = scr + 1;
-        char* src2 = src + 2;
-        if (pos + 2 < strlen(src) && *src1 == '-' && *src2 != 0){
-            char* start = *src;
-            char* end = *src2;
+        if (pos + 2 < strlen(src) && src[pos + 1] == '-'
+            && src[pos + 2] != 0){
+            char start = src[pos];
+            char end = src[pos + 2];
             if (start <= end){
                 count = count + end - start + 1;
                 pos = pos + 3;
             }
         }
-        if (*src == '\\' && *src1 != 0){
+        if (src[pos] == '\\' && src[pos + 1] != 0){
             count = count + 1;
             pos = pos + 2;
         } else {
