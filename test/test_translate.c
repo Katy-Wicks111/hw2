@@ -42,8 +42,11 @@ static void test_charseq_length(void)
     CHECK_SIZE( charseq_length("a-z"), 26 );
 
     //
-    // TODO: Add more tests for charseq_length() here
-    //
+    CHECK_SIZE( charseq_length("a-e_"), 6 );
+    CHECK_SIZE( charseq_length("a-df-i"), 8 );
+
+    CHECK_SIZE( charseq_length("\\t"), 1 );
+
 }
 
 
@@ -57,8 +60,10 @@ static void test_expand_charseq(void)
     assert_expand( "a-e", "abcde" );
 
     //
-    // TODO: Add more tests for expand_charseq() here
-    //
+    assert_expand( "a-e_", "abcde_" );
+    assert_expand( "a-df-i", "abcdfghi" );
+    assert_expand( "\\t", "\t" );
+
 }
 
 
