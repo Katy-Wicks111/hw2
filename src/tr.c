@@ -21,10 +21,15 @@ int main(int argc, char* argv[])
     char* from = expand_charseq(argv[1]);
     char* to   = expand_charseq(argv[2]);
 
-    //
-    // TODO: Your code goes here
-    //
-
+    if (from == NULL || to==NULL)
+    {
+        fprintf(stderr, OOM_MESSAGE, argv[0]);
+        return 10;
+    }
+    else if (strlen(from) != strlen(to)){
+        fprintf(stderr, LENGTH_MESSAGE, argv[0]);
+        return 2;
+    }
     char* line;
 
     while ((line = read_line()) != NULL) {
