@@ -28,63 +28,62 @@ size_t charseq_length(const char* src)
     while(src[pos] != 0){
         size_t next= pos+1;
         size_t nextnext= next+1;
-            if(nextnext<strlen(src) && src[next]== '-' && src[nextnext]!== 0){
-                char start= src[pos];
-                char end= src[nextnext];
-                if (start <= end){
+        if(src[next]== '-' && src[nextnext]!= 0){
+            char start= src[pos];
+            char end= src[nextnext];
+            if (start <= end){
                 count = count + end - start + 1;
                 pos = pos + 3;
+            } else {
+                pos=pos+3;
                 }
-            }
-            else if (next<strlen(src) && src[pos] == '\\' && src[next] != 0){
-            count = count + 1;
+        } else if (src[pos] == '\\' && src[next] != 0) {
+            count = count + 1; // this is the only improtant par
             pos = pos + 2;
-            }
-        else{
+        } else {
             count= count+1;
             pos=pos+1;
         }
     }
     return count;
 }
- 
+
 
 char* expand_charseq(const char* src)
 {
-     
     char* result = malloc(charseq_length(src) + 1);
     if (!result) return NULL;
-
     char* dst    = result;
     size_t spos = 0;
     size_t dpos = 0;
-
     while (src[spos] != 0) {
-        if (spos + 2 < charseq_length(src) &&
-            src[spos + 1] == '-' && src[spos + 2] != 0){
-            int start = src[spos];
-            int end = src[spos + 2];
-            while (start <= end){
-                dst[dpos] = start;
-                dpos = dpos + 1;
-                start = start + 1;
+        size_t next= spos+1;
+        size_t nextnext= next+1;
+        if(nextnext<strlen(src) && src[next]== '-' && src[nextnext]!= 0){
+            int start= src[spos];
+            int end= src[nextnext];
+            if (start<=end){
+                spos=spos+3;
             }
-            spos = spos + 3;
-        }
-        else if (spos + 1 < charseq_length(src) &&
-                 src[spos] == '\\' && src[spos + 1] != 0){
-            dst[dpos] = interpret_escape(src[spos+1]);
-            dpos = dpos + 1;
-            spos = spos + 2;
+            while (start <= end){
+                dst[dpos]=start;
+                dpos=dpos+1;
+                start=start+1;
+            }
+        } else if (next<strlen(src) && src[spos] == '\\' && src[next] != 0) {
+            dst[dpos]=interpret_escape(src[next]);
+            dpos=dpos+1;
+            spos=spos+2;
         } else {
-            dst[dpos] = src[spos];
-            dpos = dpos + 1;
-            spos = spos + 1;
+            dst[dpos]=src[spos];
+            dpos=dpos+1;
+            spos=spos+1;
         }
     }
-
+    dst[dpos]=0;
     return dst;
 }
+
 
 char translate_char(char c, const char* from, const char* to)
 {
