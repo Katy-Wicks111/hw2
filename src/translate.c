@@ -87,13 +87,12 @@ char* expand_charseq(const char* src)
 
 char translate_char(char c, const char* from, const char* to)
 {
-    ssize_t pos = 0;
+    size_t pos = 0;
     while (pos < strlen(from)){
         if (from[pos] == c){
-        return to[pos];
-        } else {
-            pos = pos + 1;
+            return to[pos];
         }
+        pos = pos + 1;
 
     }
 
@@ -103,10 +102,9 @@ char translate_char(char c, const char* from, const char* to)
 void translate(char* s, const char* from, const char* to)
 {
    size_t pos = 0;
-    while (pos < strlen(s)){
+    while (s[pos] != 0){
         s[pos] = translate_char(s[pos], from, to);
         pos = pos + 1;
-
-    }
+        }
 }
 
